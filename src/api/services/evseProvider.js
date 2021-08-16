@@ -2,7 +2,7 @@
 const axios = require('axios');
 
 
-exports.getLocations = async () => {
+exports.getEvses = async (location, evse) => {
   try {
     const headers = {
       'Content-Type': 'application/json',
@@ -15,7 +15,8 @@ exports.getLocations = async () => {
       'OCPI-to-party-id': 'CPO',
     };
     const locations = await axios.get(
-      'https://test-ocn.emobilify.com/ocpi/sender/2.2/locations',
+      `https://test-ocn.emobilify.com/ocpi/sender/2.2/locations/${location}/${evse}`,
+      /ocpi/sender/2.2/locations/LOC1/1234/1
       {
         headers,
       },
@@ -25,4 +26,3 @@ exports.getLocations = async () => {
     console.error(error);
   }
 };
-

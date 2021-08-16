@@ -3,8 +3,8 @@ const passport = require('passport');
 const User = require('../models/user.model');
 const APIError = require('../utils/APIError');
 
-const ADMIN = 'admin';
-const LOGGED_USER = '_loggedUser';
+const CPO = 'cpo';
+const MSP = 'msp';
 
 const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   const error = err || info;
@@ -22,8 +22,8 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
     return next(apiError);
   }
 
-  if (roles === LOGGED_USER) {
-    if (user.role !== 'admin' && req.params.userId !== user._id.toString()) {
+  if (roles === MSP) {
+    if (user.role !== 'msp' && req.params.userId !== user._id.toString()) {
       apiError.status = httpStatus.FORBIDDEN;
       apiError.message = 'Forbidden';
       return next(apiError);
@@ -41,8 +41,8 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   return next();
 };
 
-exports.ADMIN = ADMIN;
-exports.LOGGED_USER = LOGGED_USER;
+exports.CPO = CPO;
+exports.MSP = MSP;
 
 exports.authorize = (roles = User.roles) => (req, res, next) =>
   passport.authenticate(

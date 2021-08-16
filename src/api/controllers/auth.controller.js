@@ -4,7 +4,7 @@ const RefreshToken = require('../models/refreshToken.model');
 const PasswordResetToken = require('../models/passwordResetToken.model');
 const moment = require('moment-timezone');
 const { jwtExpirationInterval } = require('../../config/vars');
-const { omit } = require('lodash');
+// const { omit } = require('lodash');
 const APIError = require('../utils/APIError');
 const emailProvider = require('../services/emails/emailProvider');
 
@@ -16,6 +16,16 @@ function generateTokenResponse(user, accessToken) {
   const tokenType = 'Bearer';
   const refreshToken = RefreshToken.generate(user).token;
   const expiresIn = moment().add(jwtExpirationInterval, 'minutes');
+  console.log(
+    'generateTokenResponse: tokenType',
+    tokenType,
+    'accessToken',
+    accessToken,
+    'refreshToken',
+    refreshToken,
+    'accessToken',
+    accessToken,
+  );
   return {
     tokenType,
     accessToken,
@@ -30,7 +40,9 @@ function generateTokenResponse(user, accessToken) {
  */
 exports.register = async (req, res, next) => {
   try {
-    const userData = omit(req.body, 'role');
+    const userData = req.body;
+    console.log('userData', userData);
+    // omit(req.body, 'role')
     const user = await new User(userData).save();
     const userTransformed = user.transform();
     const token = generateTokenResponse(user, user.token());
@@ -49,6 +61,7 @@ exports.login = async (req, res, next) => {
   try {
     const { user, accessToken } = await User.findAndGenerateToken(req.body);
     const token = generateTokenResponse(user, accessToken);
+    console.log('token', token);
     const userTransformed = user.transform();
     return res.json({ token, user: userTransformed });
   } catch (error) {
@@ -84,7 +97,10 @@ exports.refresh = async (req, res, next) => {
       userEmail: email,
       token: refreshToken,
     });
-    const { user, accessToken } = await User.findAndGenerateToken({ email, refreshObject });
+    const { user, accessToken } = await User.findAndGenerateToken({
+      email,
+      refreshObject,
+    });
     const response = generateTokenResponse(user, accessToken);
     return res.json(response);
   } catch (error) {
@@ -133,7 +149,9 @@ exports.resetPassword = async (req, res, next) => {
       throw new APIError(err);
     }
 
-    const user = await User.findOne({ email: resetTokenObject.userEmail }).exec();
+    const user = await User.findOne({
+      email: resetTokenObject.userEmail,
+    }).exec();
     user.password = password;
     await user.save();
     emailProvider.sendPasswordChangeEmail(user);
