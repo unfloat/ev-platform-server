@@ -1,22 +1,22 @@
 const Connector = require('../models/connector.model');
 const { getConnectors } = require('../services/connectorProvider');
 
-
 exports.load = async (req, res, next) => {
   try {
     const connectors = await getConnectors();
     const savedConnectors = [];
-    connectors.forEach((connector) => {
-      savedConnectors.push(new Connector({
-        standard: connector.standard,
-        format: connector.format,
-        power_type: connector.power_type,
-        max_voltage: connector.max_voltage,
-        max_amperage: connector.max_amperage,
-        last_updated: connector.last_updated,
-      }));
+    connectors.forEach(connector => {
+      savedConnectors.push(
+        new Connector({
+          standard: connector.standard,
+          format: connector.format,
+          power_type: connector.power_type,
+          max_voltage: connector.max_voltage,
+          max_amperage: connector.max_amperage,
+          last_updated: connector.last_updated,
+        }),
+      );
     });
-    console.log(savedConnectors);
     return res.json(savedConnectors);
   } catch (error) {
     return next(error);

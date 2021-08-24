@@ -7,12 +7,19 @@ const locationSchema = new mongoose.Schema({
   country_code: {
     type: String,
   },
-  // party_id: {
-  //   type: String,
-  // },
   station_name: {
     type: String,
-
+  },
+  coordinates: {
+    latitude: {
+      type: String,
+    },
+    longitude: {
+      type: String,
+    },
+  },
+  operator: {
+    type: String,
   },
   address: {
     type: String,
@@ -30,13 +37,9 @@ const locationSchema = new mongoose.Schema({
     latitude: {
       type: String,
     },
-    longitude:
-    {
+    longitude: {
       type: String,
     },
-  },
-  operator: {
-    type: String,
   },
   // opening_times: {
   //   type: String,
@@ -57,13 +60,10 @@ const locationSchema = new mongoose.Schema({
   //   },
   // },
   // add energy_source child class
-
 });
 
 locationSchema.pre('save', async function save(next) {
   try {
-    console.log(`wiiiiiiiiiiiiiiiiiiiiiiiiiw ${this}`);
-
     return next();
   } catch (error) {
     return next(error);

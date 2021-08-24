@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 const axios = require('axios');
 
-
 exports.getEvses = async (location, evse) => {
   try {
     const headers = {
@@ -14,14 +13,14 @@ exports.getEvses = async (location, evse) => {
       'OCPI-to-country-code': 'CH',
       'OCPI-to-party-id': 'CPO',
     };
-    const locations = await axios.get(
+    const evses = await axios.get(
       `https://test-ocn.emobilify.com/ocpi/sender/2.2/locations/${location}/${evse}`,
-      /ocpi/sender/2.2/locations/LOC1/1234/1
+      // /ocpi/sender/2.2/locations/LOC1/1234/1
       {
         headers,
       },
     );
-    return locations.data;
+    return evses.data;
   } catch (error) {
     console.error(error);
   }

@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
 const axios = require('axios');
 
-
-exports.getConnectors = async (location, evse, connector) => {
+// location, evse, connector (args)
+exports.getConnectors = async () => {
   try {
     const headers = {
       'Content-Type': 'application/json',
@@ -15,14 +15,19 @@ exports.getConnectors = async (location, evse, connector) => {
       'OCPI-to-party-id': 'CPO',
     };
     const connectors = await axios.get(
-      `https://test-ocn.emobilify.com/ocpi/sender/2.2/locations/${location}/${evse}/${connector}`,
+      // `https://test-ocn.emobilify.com/ocpi/sender/2.2/locations/${location}/${evse}/${connector}`,
+      'https://test-ocn.emobilify.com/ocpi/sender/2.2/locations',
+
       {
         headers,
       },
     );
-    return connectors;
+    console.log(connectors);
+    // connectors.data.evses.forEach(element => {
+    //   console.log('connectors.data', element.connectors);
+    // });
+    return connectors.data;
   } catch (error) {
     console.error(error);
   }
 };
-
