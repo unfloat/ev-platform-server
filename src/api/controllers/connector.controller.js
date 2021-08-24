@@ -1,23 +1,30 @@
 const Connector = require('../models/connector.model');
-const { getConnectors } = require('../services/connectorProvider');
+const { getLocations } = require('../services/locationProvider');
+
+// const { getConnectors } = require('../services/connectorProvider');
 
 exports.load = async (req, res, next) => {
   try {
-    const connectors = await getConnectors();
+    // const connectors = await getConnectors();
+    const locations = await getLocations();
+
     const savedConnectors = [];
-    connectors.forEach(connector => {
-      savedConnectors.push(
-        new Connector({
-          standard: connector.standard,
-          format: connector.format,
-          power_type: connector.power_type,
-          max_voltage: connector.max_voltage,
-          max_amperage: connector.max_amperage,
-          last_updated: connector.last_updated,
-        }),
-      );
+    locations.data.forEach(location => {
+      location.evses.forEach(evse => {
+        evse.connectors.forEach(connector => {
+          savedConnectors.push(
+            new Connector({
+              standard: connector.standard,
+              format: connector.format,
+              power_type: connector.power_type,
+              max_voltage: connector.max_voltage,
+              max_amperage: connector.max_amperage,
+            }),
+          );
+        });
+      });
     });
-    return res.json(savedConnectors);
+    return res.status(200).json(savedConnectors);
   } catch (error) {
     return next(error);
   }

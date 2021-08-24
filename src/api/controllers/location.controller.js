@@ -7,8 +7,6 @@ exports.load = async (req, res, next) => {
   try {
     const locations = await getLocations();
     const savedLocations = [];
-    const savedEvses = [];
-    const savedConnectors = [];
 
     locations.data.forEach(location => {
       savedLocations.push(
@@ -31,26 +29,11 @@ exports.load = async (req, res, next) => {
             : false,
         }),
       );
-
-      location.evses.forEach(evse => {
-        savedEvses.push(
-          new Evse({
-            evse_id: evse.evse_id,
-            status: evse.status,
-          }),
-        );
-        evse.savedConnectors.forEach(connector => {
-          savedConnectors.push(
-            new Connector({
-              standard: connector.standard,
-            }),
-          );
-        });
-      });
     });
-    console.log('savedConnectors', savedConnectors, 'savedEvses', savedEvses);
-    // return res.json(savedLocations);
+    console.log('savedLocations', savedLocations);
+    return res.status(200).json(savedLocations);
   } catch (error) {
+    res.status(500).json({ message: 'fuck off' });
     return next(error);
   }
 };
