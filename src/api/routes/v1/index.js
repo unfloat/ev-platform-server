@@ -5,6 +5,7 @@ const locationRoutes = require('./location.route');
 // const registerRoutes = require('./register.route');
 const evseRoutes = require('./evse.route');
 const connectorRoutes = require('./connector.route');
+const vehiculeRoutes = require('./vehicule.route');
 
 const router = express.Router();
 
@@ -23,6 +24,8 @@ router.use('/users', userRoutes);
 router.use('/auth', authRoutes);
 router.use('/locations', locationRoutes);
 router.use('/connectors', connectorRoutes);
+router.use('/vehicules', vehiculeRoutes);
+
 router.use('/evses', evseRoutes);
 
 module.exports = router;

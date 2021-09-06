@@ -20,3 +20,15 @@ exports.load = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.getEvse = async (req, res, next) => {
+  try {
+    const evses = await Evse.find();
+    console.log(evses);
+    res.status(200);
+    return res.json(evses);
+  } catch (error) {
+    res.status(500).json({ message: error });
+    return next(error);
+  }
+};

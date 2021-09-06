@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
 const APIError = require('../utils/APIError');
 const { env, jwtSecret, jwtExpirationInterval } = require('../../config/vars');
+var Schema = mongoose.Schema;
 
 /**
  * User Roles
@@ -34,7 +35,13 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
       maxlength: 128,
     },
-    name: {
+    firstname: {
+      type: String,
+      maxlength: 128,
+      index: true,
+      trim: true,
+    },
+    lastname: {
       type: String,
       maxlength: 128,
       index: true,
@@ -53,6 +60,23 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    address: {
+      type: String,
+      trim: true,
+    },
+    city: {
+      type: String,
+      trim: true,
+    },
+    country: {
+      type: String,
+      trim: true,
+    },
+    about: {
+      type: String,
+      trim: true,
+    },
+    vehicules: [{ type: Schema.Types.ObjectId, ref: 'Vehicule' }],
   },
   {
     timestamps: true,
@@ -86,7 +110,14 @@ userSchema.pre('save', async function save(next) {
 userSchema.method({
   transform() {
     const transformed = {};
-    const fields = ['id', 'name', 'email', 'role', 'createdAt'];
+    const fields = [
+      'id',
+      'firstname',
+      'lastname',
+      'email',
+      'role',
+      'createdAt',
+    ];
 
     fields.forEach(field => {
       transformed[field] = this[field];

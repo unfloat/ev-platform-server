@@ -22,17 +22,15 @@ const connectorSchema = new mongoose.Schema({
   last_updated: {
     type: Date,
   },
-
 });
 
-connectorSchema.pre('save', async (next) => {
+connectorSchema.pre('save', async next => {
   try {
     return next();
   } catch (error) {
     return next(error);
   }
 });
-
 
 /**
  * @typedef Connector

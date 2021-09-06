@@ -1,39 +1,32 @@
-const { getLocations } = require('../services/locationProvider');
+const { getLocations, saveLocations } = require('../services/locationProvider');
 const Location = require('../models/location.model');
 const Connector = require('../models/connector.model');
 const Evse = require('../models/evse.model');
 
-exports.load = async (req, res, next) => {
+exports.getLocations = async (req, res, next) => {
   try {
-    const locations = await getLocations();
-    const savedLocations = [];
-
-    locations.data.forEach(location => {
-      savedLocations.push(
-        new Location({
-          party_id: location.party_id,
-          station_name: location.name,
-          coordinates: {
-            latitude: location.coordinates.latitude,
-            longitude: location.coordinates.longitude,
-          },
-          address: location.address,
-          city: location.city,
-          postal_code: location.postal_code,
-          operator: location.operator,
-          twenty_four_seven: location.opening_times.twentyfourseven
-            ? location.opening_times.twentyfourseven
-            : false,
-          is_green_energy: location.energy_mix.is_green_energy
-            ? location.energy_mix.is_green_energy
-            : false,
-        }),
-      );
+    let locations = await Location.find().populate({
+      path: 'evses',
+      // Get friends of friends - populate the 'friends' array for every friend
+      populate: { path: 'connectors' },
     });
-    console.log('savedLocations', savedLocations);
-    return res.status(200).json(savedLocations);
+    console.log(locations);
+    res.status(200);
+
+    return res.json(locations);
   } catch (error) {
-    res.status(500).json({ message: 'fuck off' });
+    res.status(500).json({ message: error });
     return next(error);
+  }
+};
+
+exports.saveAndFormatLocations = async (req, res, next) => {
+  try {
+    const savedLocations = await saveLocations();
+    res.status(200).json(savedLocations);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+    //  return next(error);
   }
 };

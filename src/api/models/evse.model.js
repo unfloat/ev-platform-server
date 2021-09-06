@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
 /**
  * Evse Schema
  * @private
@@ -10,17 +12,16 @@ const evseSchema = new mongoose.Schema({
   status: {
     type: String,
   },
-
+  connectors: [{ type: Schema.Types.ObjectId, ref: 'Connector' }],
 });
 
-evseSchema.pre('save', async (next) => {
+evseSchema.pre('save', async next => {
   try {
     return next();
   } catch (error) {
     return next(error);
   }
 });
-
 
 /**
  * @typedef Evse

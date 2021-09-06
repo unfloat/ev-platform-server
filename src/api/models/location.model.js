@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
 /**
  * Location Schema
  * @private
@@ -41,25 +43,13 @@ const locationSchema = new mongoose.Schema({
       type: String,
     },
   },
-  // opening_times: {
-  //   type: String,
-  // },
-  // add opening_time child class
   twentyfourseven: {
     type: Boolean,
   },
   is_green_energy: {
     type: Boolean,
   },
-  // energy_sources: {
-  //   source: {
-  //     type: String,
-  //   },
-  //   percentage: {
-  //     type: Number,
-  //   },
-  // },
-  // add energy_source child class
+  evses: [{ type: Schema.Types.ObjectId, ref: 'Evse' }],
 });
 
 locationSchema.pre('save', async function save(next) {
