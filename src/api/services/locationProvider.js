@@ -23,6 +23,8 @@ exports.getLocations = async () => {
       },
     );
 
+    // Open Charge Network
+
     return locations.data;
 
     // const formattedLocations = [];

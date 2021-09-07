@@ -31,6 +31,7 @@ function generateTokenResponse(user, accessToken) {
     accessToken,
     refreshToken,
     expiresIn,
+    user,
   };
 }
 
@@ -46,8 +47,9 @@ exports.register = async (req, res, next) => {
     const user = await new User(userData).save();
     const userTransformed = user.transform();
     const token = generateTokenResponse(user, user.token());
+    console.log('exports register user', user);
     res.status(httpStatus.CREATED);
-    return res.json({ token, user: userTransformed });
+    return res.json({ token, user });
   } catch (error) {
     return next(User.checkDuplicateEmail(error));
   }
@@ -61,9 +63,8 @@ exports.login = async (req, res, next) => {
   try {
     const { user, accessToken } = await User.findAndGenerateToken(req.body);
     const token = generateTokenResponse(user, accessToken);
-    console.log('token', token);
     const userTransformed = user.transform();
-    return res.json({ token, user: userTransformed });
+    return res.json({ token, user: user });
   } catch (error) {
     return next(error);
   }
