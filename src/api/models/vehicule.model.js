@@ -27,9 +27,7 @@ const vehiculeSchema = new mongoose.Schema({
   max_amperage: {
     type: String,
   },
-  user_id: {
-    type: String,
-  },
+  owner: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 /**

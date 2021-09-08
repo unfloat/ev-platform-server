@@ -67,10 +67,11 @@ exports.replace = async (req, res, next) => {
  * Update existing user
  * @public
  */
-exports.update = (req, res, next) => {
+exports.update = async (req, res, next) => {
   // const ommitRole = req.locals.user.role !== 'admin' ? 'role' : '';
-  const updatedUser = omit(req.body, ommitRole);
+  const updatedUser = await new User(req.body);
   const user = Object.assign(req.locals.user, updatedUser);
+  console.log(updatedUser, 'updatedUser', user, 'user');
 
   user
     .save()
