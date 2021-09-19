@@ -51,10 +51,11 @@ exports.replace = async (req, res, next) => {
   try {
     const { user } = req.locals;
     const newUser = new User(req.body);
+    console.log('req.body', req.body, 'user', user, 'newUser', newUser);
     // const ommitRole = user.role !== 'admin' ? 'role' : '';
     // const newUserObject = omit(newUser.toObject(), '_id', ommitRole);
 
-    await user.updateOne(newUser.toObject(), { override: true, upsert: true });
+    await user.updateOne(newUser.toObject(), { override: true, upsert: false });
     const savedUser = await User.findById(user._id);
 
     res.json(savedUser);
@@ -68,15 +69,24 @@ exports.replace = async (req, res, next) => {
  * @public
  */
 exports.update = async (req, res, next) => {
-  // const ommitRole = req.locals.user.role !== 'admin' ? 'role' : '';
-  const updatedUser = await new User(req.body);
-  const user = Object.assign(req.locals.user, updatedUser);
-  console.log(updatedUser, 'updatedUser', user, 'user');
+  try {
+    // const ommitRole = req.locals.user.role !== 'admin' ? 'role' : '';
+    //const newUser = await new User(req.body);
+    console.log(req.body);
+    const id = req.locals.user._id;
+    const update = req.body;
+    const oldUser = await User.get(id);
+    const user = Object.assign(oldUser, update, {
+      override: true,
+    });
 
-  user
-    .save()
-    .then(savedUser => res.json(savedUser.transform()))
-    .catch(e => next(User.checkDuplicateEmail(e)));
+    user
+      .save()
+      .then(user => res.json(user.transform()))
+      .catch(e => next(User.checkDuplicateEmail(e)));
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**

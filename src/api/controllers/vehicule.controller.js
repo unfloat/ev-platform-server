@@ -20,3 +20,17 @@ exports.create = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.load = async (req, res, next) => {
+  try {
+    let vehicules = await Vehicule.find();
+    // .populate({path: 'users',})
+    console.log(vehicules);
+    res.status(200);
+
+    return res.json(vehicules);
+  } catch (error) {
+    res.status(500).json({ message: error });
+    return next(error);
+  }
+};

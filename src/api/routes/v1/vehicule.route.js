@@ -16,5 +16,6 @@ const router = express.Router();
  */
 
 router.post('/add', controller.create);
+router.get('/', controller.load);
 
 module.exports = router;

@@ -9,7 +9,7 @@ const locationSchema = new mongoose.Schema({
   country_code: {
     type: String,
   },
-  station_name: {
+  location_name: {
     type: String,
   },
   coordinates: {
@@ -23,6 +23,25 @@ const locationSchema = new mongoose.Schema({
   operator: {
     type: String,
   },
+  contact_operator: {
+    type: String,
+  },
+  telephone_operateur: {
+    type: String,
+  },
+  location_type: {
+    type: String,
+  },
+  condition_acces: {
+    type: String,
+  },
+  connection: {
+    type: String,
+  },
+  tarif: {
+    type: String,
+  },
+
   address: {
     type: String,
   },
@@ -44,9 +63,21 @@ const locationSchema = new mongoose.Schema({
     },
   },
   twentyfourseven: {
-    type: Boolean,
+    type: String,
   },
   is_green_energy: {
+    type: Boolean,
+  },
+  free_charging: {
+    type: Boolean,
+  },
+  bookable: {
+    type: Boolean,
+  },
+  two_wheel: {
+    type: Boolean,
+  },
+  payment_by_card: {
     type: Boolean,
   },
   evses: [{ type: Schema.Types.ObjectId, ref: 'Evse' }],

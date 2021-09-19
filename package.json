@@ -74,6 +74,7 @@
     "ethers": "^4.0.33",
     "express": "^4.15.2",
     "express-validation": "^1.0.2",
+    "fs": "^0.0.1-security",
     "helmet": "^3.5.0",
     "http-status": "^1.0.1",
     "joi": "^10.4.1",
