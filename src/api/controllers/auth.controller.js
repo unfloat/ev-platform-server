@@ -64,7 +64,7 @@ exports.login = async (req, res, next) => {
     const { user, accessToken } = await User.findAndGenerateToken(req.body);
     const token = generateTokenResponse(user, accessToken);
     const userTransformed = user.transform();
-    return res.json({ token, user: user });
+    return res.json({ token, user: userTransformed });
   } catch (error) {
     return next(error);
   }

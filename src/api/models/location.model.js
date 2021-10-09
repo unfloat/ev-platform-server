@@ -62,6 +62,12 @@ const locationSchema = new mongoose.Schema({
       type: String,
     },
   },
+  creation_date: {
+    type: String,
+  },
+  nominal_power: {
+    type: Number,
+  },
   twentyfourseven: {
     type: String,
   },
@@ -80,7 +86,11 @@ const locationSchema = new mongoose.Schema({
   payment_by_card: {
     type: Boolean,
   },
-  evses: [{ type: Schema.Types.ObjectId, ref: 'Evse' }],
+  status: {
+    type: Boolean,
+  },
+  // evses: [{ type: Schema.Types.ObjectId, ref: 'Evse' }],
+  owner: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 locationSchema.pre('save', async function save(next) {

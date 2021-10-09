@@ -16,6 +16,6 @@ const router = express.Router();
  */
 //router.param('userId', controller.load);
 
-router.route('/:userId').patch(controller.update);
+router.route('/update').put(controller.update);
 // :userId
 module.exports = router;

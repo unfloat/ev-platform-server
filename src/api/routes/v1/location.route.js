@@ -11,6 +11,8 @@ const router = express.Router();
  */
 
 router.get('/', controller.getLocations);
+router.get('/cpo', controller.getCpoOwnedLocations);
 router.get('/saveLocations', controller.saveAndFormatLocations);
+router.post('/createCpoOwnedLocation', controller.createLocation);
 
 module.exports = router;

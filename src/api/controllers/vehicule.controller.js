@@ -9,28 +9,36 @@ const Vehicule = require('../models/vehicule.model');
  */
 exports.create = async (req, res, next) => {
   try {
-    const vehicule = new Vehicule(req.body);
+    const user = await User.get(req.body.userId);
+    const vehicule = await new Vehicule({
+      brand: req.body.brand,
+      model: req.body.model,
+      standard: req.body.standard,
+      format: req.body.format,
+      power_type: req.body.power_type,
+      max_voltage: req.body.max_voltage,
+      max_amperage: req.body.max_amperage,
+      owner: user,
+    });
     const savedVehicule = await vehicule.save();
-    const user = User.get(req.body.id);
-    res.status(httpStatus.CREATED);
-    // next(savedVehicule);
-    res.json(user);
-    return next();
+    console.log(savedVehicule, 'savedVehicule');
+    res = res.status(httpStatus.CREATED);
+    // .json(user);
+    console.log(user._id);
+    return res.json({ id: user._id });
+    // next(user);
   } catch (error) {
-    return next(error);
+    return next();
   }
 };
 
 exports.load = async (req, res, next) => {
   try {
-    let vehicules = await Vehicule.find();
-    // .populate({path: 'users',})
-    console.log(vehicules);
+    const user = await User.get(req.query.userId);
+    let vehicules = await Vehicule.find({ owner: user });
     res.status(200);
-
     return res.json(vehicules);
   } catch (error) {
-    res.status(500).json({ message: error });
     return next(error);
   }
 };

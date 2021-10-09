@@ -71,18 +71,23 @@ exports.replace = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     // const ommitRole = req.locals.user.role !== 'admin' ? 'role' : '';
-    //const newUser = await new User(req.body);
-    console.log(req.body);
-    const id = req.locals.user._id;
+    const oldUser = await User.get(req.query.userId);
+    // const { user, accessToken } = await User.findAndGenerateToken(oldUser);
+
     const update = req.body;
-    const oldUser = await User.get(id);
+
     const user = Object.assign(oldUser, update, {
       override: true,
     });
 
+    console.log(user);
+
+    // console.log('oldUser', oldUser);
+    // // console.log('oldUser', oldUser);
+    // res.json('test');
     user
       .save()
-      .then(user => res.json(user.transform()))
+      .then(savedUser => res.json(savedUser))
       .catch(e => next(User.checkDuplicateEmail(e)));
   } catch (error) {
     next(error);

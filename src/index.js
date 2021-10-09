@@ -2,6 +2,8 @@
 // Promise = require('bluebird'); // eslint-disable-line no-global-assign
 const { port, env } = require('./config/vars');
 const logger = require('./config/logger');
+const dotenv = require('dotenv');
+dotenv.config({ path: './env' });
 const app = require('./config/express');
 const mongoose = require('./config/mongoose');
 
@@ -14,7 +16,7 @@ app.use('/', (req, res, next) => res.send('test'));
 app.listen(port, () => logger.info(`server started on port ${port} (${env})`));
 
 /**
-* Exports express
-* @public
-*/
+ * Exports express
+ * @public
+ */
 module.exports = app;
