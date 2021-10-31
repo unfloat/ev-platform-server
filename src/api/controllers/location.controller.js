@@ -17,6 +17,7 @@ exports.getLocations = async (req, res, next) => {
     res.status(200);
     return res.json(savedLocations);
   } catch (error) {
+    res.status(500);
     return next(error);
   }
 };
@@ -29,6 +30,8 @@ exports.getLocationsByUserGeolocation = async (req, res, next) => {
     res.status(200);
     return res.json(savedLocations);
   } catch (error) {
+    res.status(500);
+
     return next(error);
   }
 };
