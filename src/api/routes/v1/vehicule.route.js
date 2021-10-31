@@ -12,5 +12,7 @@ const router = express.Router();
 
 router.post('/add', controller.create);
 router.get('/', controller.load);
+router.put('/update', controller.update);
+router.delete('/delete', controller.remove);
 
 module.exports = router;

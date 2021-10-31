@@ -76,6 +76,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    website_url: {
+      type: String,
+      trim: true,
+    },
+    phone: {
+      type: String,
+      trim: true,
+    },
+
     vehicules: [{ type: Schema.Types.ObjectId, ref: 'Vehicule' }],
   },
   {
@@ -114,7 +123,9 @@ userSchema.method({
       'id',
       'firstname',
       'lastname',
+      'address',
       'email',
+      'phone',
       'role',
       'createdAt',
     ];

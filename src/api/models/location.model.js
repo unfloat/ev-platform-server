@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const httpStatus = require('http-status');
+const { omitBy, isNil } = require('lodash');
+const APIError = require('../utils/APIError');
 var Schema = mongoose.Schema;
 
 /**
@@ -100,6 +103,37 @@ locationSchema.pre('save', async function save(next) {
     return next(error);
   }
 });
+
+/**
+ * Statics
+ */
+locationSchema.statics = {
+  /**
+   * Get location
+   *
+   * @param {ObjectId} id - The objectId of location.
+   * @returns {Promise<User, APIError>}
+   */
+  async get(id) {
+    try {
+      let location;
+
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        location = await this.findById(id).exec();
+      }
+      if (location) {
+        return location;
+      }
+
+      throw new APIError({
+        message: 'Location does not exist',
+        status: httpStatus.NOT_FOUND,
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+};
 
 // locationSchema.method({
 //   transform() {

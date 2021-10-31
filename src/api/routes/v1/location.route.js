@@ -11,8 +11,15 @@ const router = express.Router();
  */
 
 router.get('/', controller.getLocations);
+router.put('/cpo/update', controller.update);
+// router.route('/update').put(controller.update);
+
+router.get('/geolocation', controller.getLocationsByUserGeolocation);
+router.get('/connectiontypeid', controller.getLocationsByConnectorType);
 router.get('/cpo', controller.getCpoOwnedLocations);
 router.get('/saveLocations', controller.saveAndFormatLocations);
 router.post('/createCpoOwnedLocation', controller.createLocation);
+
+router.delete('/cpo/delete', controller.remove);
 
 module.exports = router;

@@ -5,7 +5,18 @@ const Connector = require('../models/connector.model');
 const Location = require('../models/location.model');
 const fs = require('fs');
 // async
-exports.getLocations = async (latitude, longitude, distance) => {
+
+/*
+latitude: userLatitude ? userLatitude : 49.2603667,
+      longitude: userLongitude ? userLongitude : 3.0872607,
+      distance: 10, // userDistance,
+      distanceunit: 'KM',
+            maxresults: 1,
+
+      */
+
+// (userLatitude, userLongitude)
+exports.getLocationsByUserGeolocationProvider = async parameters => {
   try {
     const headers = {
       'Content-Type': 'application/json',
@@ -13,16 +24,76 @@ exports.getLocations = async (latitude, longitude, distance) => {
       'X-Correlation-ID': '1',
       'X-API-Key': process.env.OPEN_API_KEY,
     };
-    const parameters = {
-      latitude,
-      longitude,
-      distance,
+
+    console.log('provider here?', parameters);
+
+    const params = {
+      latitude: parameters.latitude,
+      longitude: parameters.longitude,
+      maxresults: 5,
     };
+
     const locations = await axios.get(process.env.OPEN_API_URL, {
       headers,
-      parameters,
+      params,
+    });
+    return locations.data;
+  } catch (error) {
+    return error;
+  }
+};
+exports.getLocationsByConnectorTypeProvider = async parameters => {
+  try {
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Request-ID': '1',
+      'X-Correlation-ID': '1',
+      'X-API-Key': process.env.OPEN_API_KEY,
+    };
+
+    const params = {
+      latitude: parameters.latitude,
+      longitude: parameters.longitude,
+      maxresults: 10,
+    };
+
+    console.log('provider here?', parameters);
+
+    const locations = await axios.get(process.env.OPEN_API_URL, {
+      headers,
+      params,
+    });
+    return locations.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+// { latitude, longitude }
+exports.getLocationsProvider = async parameters => {
+  try {
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Request-ID': '1',
+      'X-Correlation-ID': '1',
+      'X-API-Key': process.env.OPEN_API_KEY,
+    };
+
+    const params = {
+      latitude: parameters.latitude,
+      longitude: parameters.longitude,
+      maxresults: 10,
+    };
+    console.log('parameters', parameters);
+
+    const locations = await axios.get(process.env.OPEN_API_URL, {
+      headers,
+      params,
     });
 
+    console.log('location', locations.data);
+
+    res.status(200);
     return locations.data;
   } catch (error) {
     return error;
