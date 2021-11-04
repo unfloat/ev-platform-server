@@ -30,7 +30,10 @@ exports.getLocationsByUserGeolocationProvider = async parameters => {
     const params = {
       latitude: parameters.latitude,
       longitude: parameters.longitude,
-      maxresults: 5,
+      maxresults: 20,
+      distance: 10,
+      distanceunit: 'KM',
+      connectiontypeid: parameters.connectiontypeid,
     };
 
     const locations = await axios.get(process.env.OPEN_API_URL, {
@@ -55,6 +58,8 @@ exports.getLocationsByConnectorTypeProvider = async parameters => {
       latitude: parameters.latitude,
       longitude: parameters.longitude,
       maxresults: 10,
+      distance: 5,
+      distanceunit: 'KM',
     };
 
     console.log('provider here?', parameters);
@@ -82,16 +87,15 @@ exports.getLocationsProvider = async parameters => {
     const params = {
       latitude: parameters.latitude,
       longitude: parameters.longitude,
-      maxresults: 10,
+      maxresults: 200,
+      distance: 100,
+      distanceunit: 'KM',
     };
-    console.log('parameters', parameters);
 
     const locations = await axios.get(process.env.OPEN_API_URL, {
       headers,
       params,
     });
-
-    console.log('location', locations.data);
 
     res.status(200);
     return locations.data;

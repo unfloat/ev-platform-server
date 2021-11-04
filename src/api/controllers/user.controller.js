@@ -70,7 +70,7 @@ exports.replace = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
   try {
-    console.log(req.query.userId, 'req.query.userId');
+    console.log(req.body, 'req.body');
     // const ommitRole = req.locals.user.role !== 'admin' ? 'role' : '';
     const oldUser = await User.get(req.query.userId);
     // const { user, accessToken } = await User.findAndGenerateToken(oldUser);

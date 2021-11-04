@@ -13,7 +13,7 @@ const axios = require('axios');
 exports.getLocations = async (req, res, next) => {
   try {
     const savedLocations = await getLocationsProvider(req.query);
-    console.log(req.query);
+    console.log('req.query', req.query);
     res.status(200);
     return res.json(savedLocations);
   } catch (error) {
@@ -26,7 +26,6 @@ exports.getLocationsByUserGeolocation = async (req, res, next) => {
     const savedLocations = await getLocationsByUserGeolocationProvider(
       req.query,
     );
-    console.log('req.query', req.query);
     res.status(200);
     return res.json(savedLocations);
   } catch (error) {
@@ -71,8 +70,8 @@ exports.getCpoOwnedLocations = async (req, res, next) => {
     const user = await User.get(req.query.userId);
 
     let locations = await Location.find({ owner: user });
+    console.log('Locations', locations);
     res.status(200);
-
     return res.json(locations);
   } catch (error) {
     return next(error);
@@ -87,14 +86,16 @@ exports.update = async (req, res, next) => {
   try {
     const oldLocation = await Location.get(req.query.locationId);
     console.log('oldLocation', oldLocation);
+    console.log('req.body', req.body);
+
     const location = Object.assign(oldLocation, req.body, {
-      override: true,
+      override: false,
     });
     const updatedLocation = await location.save();
     console.log('updatedLocation', updatedLocation);
 
     res.status(200);
-    res.json(updatedLocation); //req.query.owner
+    res.json(oldLocation.owner); //req.query.owner
   } catch (error) {
     next(error);
   }

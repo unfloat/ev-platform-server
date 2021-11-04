@@ -34,16 +34,16 @@ exports.create = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     const oldVehicule = await Vehicule.get(req.query.vehiculeId);
-    console.log('oldVehicule', oldVehicule);
+    const owner = oldVehicule.owner;
+
     const vehicule = Object.assign(oldVehicule, req.body, {
       override: true,
     });
 
     const updatedVehicule = await vehicule.save();
-    console.log('updatedLocation', updatedLocation);
 
     res.status(200);
-    res.json(updatedVehicule); //req.query.owner
+    res.json(owner);
   } catch (error) {
     next(error);
   }
@@ -56,14 +56,15 @@ exports.update = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
   try {
     const vehicule = await Vehicule.get(req.query.vehiculeId);
-    const id = req.query.userId;
+    const owner = vehicule.owner;
+    console.log('vehicule', vehicule);
 
     vehicule
       .remove()
       .then(() => res.status(httpStatus.NO_CONTENT))
       .catch(e => next(e));
 
-    return res.json(id);
+    return res.json(owner);
   } catch (error) {
     next(error);
   }

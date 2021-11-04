@@ -125,8 +125,11 @@ userSchema.method({
       'lastname',
       'address',
       'email',
+      'city',
       'phone',
       'role',
+      'about',
+      'website_url',
       'createdAt',
     ];
 
