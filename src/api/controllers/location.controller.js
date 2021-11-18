@@ -14,6 +14,8 @@ exports.getLocations = async (req, res, next) => {
   try {
     const savedLocations = await getLocationsProvider(req.query);
     console.log('req.query', req.query);
+    console.log(savedLocations, 'savedLocations');
+
     res.status(200);
     return res.json(savedLocations);
   } catch (error) {
@@ -26,7 +28,9 @@ exports.getLocationsByUserGeolocation = async (req, res, next) => {
     const savedLocations = await getLocationsByUserGeolocationProvider(
       req.query,
     );
+
     res.status(200);
+
     return res.json(savedLocations);
   } catch (error) {
     res.status(500);
@@ -142,6 +146,8 @@ exports.createLocation = async (req, res, next) => {
     });
 
     const savedCpoOwnedLocation = await cpoOwnedLocation.save();
+
+    await createCpoLocation(cpoOwnedLocation);
 
     res.status(httpStatus.CREATED);
 

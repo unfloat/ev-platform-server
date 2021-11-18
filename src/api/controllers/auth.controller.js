@@ -7,6 +7,7 @@ const { jwtExpirationInterval } = require('../../config/vars');
 // const { omit } = require('lodash');
 const APIError = require('../utils/APIError');
 const emailProvider = require('../services/emails/emailProvider');
+const gravatar = require('gravatar');
 
 /**
  * Returns a formated object with tokens
@@ -44,6 +45,7 @@ exports.register = async (req, res, next) => {
     const userData = req.body;
     console.log('userData', userData);
     // omit(req.body, 'role')
+    const avatar = gravatar.url(email, { s: '100', r: 'x', d: 'retro' }, false);
     const user = await new User(userData).save();
     const userTransformed = user.transform();
     const token = generateTokenResponse(user, user.token());
