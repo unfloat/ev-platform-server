@@ -16,10 +16,9 @@ exports.getLocationsByUserGeolocationProvider = async parameters => {
     const params = {
       latitude: parameters.latitude,
       longitude: parameters.longitude,
-      maxresults: 20,
+      maxresults: 50,
       distance: 5,
       distanceunit: 'KM',
-      connectiontypeid: parameters.connectiontypeid,
     };
 
     const locations = await axios.get(process.env.OPEN_API_URL, {
@@ -92,6 +91,8 @@ exports.getLocationsProvider = async parameters => {
     return error;
   }
 };
+
+// OCM Post
 exports.createCpoLocation = async location => {
   try {
     const headers = {

@@ -45,15 +45,19 @@ exports.register = async (req, res, next) => {
     const userData = req.body;
     console.log('userData', userData);
     // omit(req.body, 'role')
-    const avatar = gravatar.url(email, { s: '100', r: 'x', d: 'retro' }, false);
-    const user = await new User(userData).save();
+    const avatar = gravatar.url(
+      userData.email,
+      { s: '100', r: 'x', d: 'retro' },
+      false,
+    );
+    const user = await new User({ ...userData, avatar }).save();
     const userTransformed = user.transform();
     const token = generateTokenResponse(user, user.token());
     console.log('exports register user', user);
     res.status(httpStatus.CREATED);
-    return res.json({ token, user });
+    return res.json({ token, user, avatar });
   } catch (error) {
-    return next(User.checkDuplicateEmail(error));
+    return next(error);
   }
 };
 

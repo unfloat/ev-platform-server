@@ -1,6 +1,7 @@
 {
   "name": "express-rest-es2017-boilerplate",
   "version": "1.2.2",
+  "homepage": "https://unfloat.github.io/express-rest-es2017-boilerplate/",
   "description": "Express boilerplate for building RESTful APIs",
   "author": "Daniel Sousa <sousa.dfs@gmail.com>",
   "main": "src/index.js",
@@ -11,6 +12,8 @@
     "yarn": "*"
   },
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "prestart": "yarn docs",
     "start": "cross-env NODE_ENV=production pm2 start ./src/index.js",
     "dev": "nodemon ./src/index.js",
@@ -24,7 +27,6 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "validate": "yarn lint && yarn test",
     "postpublish": "git push --tags",
-    "deploy": "sh ./deploy.sh",
     "docs": "apidoc -i src -o docs",
     "postdocs": "open-cli docs/index.html",
     "docker:start": "cross-env NODE_ENV=production pm2-docker start ./src/index.js",
@@ -75,6 +77,7 @@
     "express": "^4.15.2",
     "express-validation": "^1.0.2",
     "fs": "^0.0.1-security",
+    "gh-pages": "^3.2.3",
     "gravatar": "^1.8.2",
     "helmet": "^3.5.0",
     "http-status": "^1.0.1",

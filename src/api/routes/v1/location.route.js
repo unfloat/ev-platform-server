@@ -18,7 +18,7 @@ router.get('/geolocation', controller.getLocationsByUserGeolocation);
 router.get('/connectiontypeid', controller.getLocationsByConnectorType);
 router.get('/cpo', controller.getCpoOwnedLocations);
 router.get('/saveLocations', controller.saveAndFormatLocations);
-router.post('/createCpoOwnedLocation', controller.createLocation);
+router.post('/new', controller.createLocation);
 
 router.delete('/cpo/delete', controller.remove);
 

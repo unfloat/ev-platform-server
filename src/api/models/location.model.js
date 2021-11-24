@@ -92,7 +92,21 @@ const locationSchema = new mongoose.Schema({
   status: {
     type: Boolean,
   },
-  // evses: [{ type: Schema.Types.ObjectId, ref: 'Evse' }],
+  standard: {
+    type: String,
+  },
+  format: {
+    type: String,
+  },
+  power_type: {
+    type: String,
+  },
+  max_voltage: {
+    type: Number,
+  },
+  max_amperage: {
+    type: Number,
+  },
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
 /**
  * Connector Schema
  * @private
@@ -19,9 +21,7 @@ const connectorSchema = new mongoose.Schema({
   max_amperage: {
     type: Number,
   },
-  last_updated: {
-    type: Date,
-  },
+  location: { type: Schema.Types.ObjectId, ref: 'Location' },
 });
 
 connectorSchema.pre('save', async next => {

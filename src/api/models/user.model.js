@@ -84,6 +84,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    avatar: {
+      type: String,
+    },
 
     vehicules: [{ type: Schema.Types.ObjectId, ref: 'Vehicule' }],
   },
@@ -129,6 +132,7 @@ userSchema.method({
       'phone',
       'role',
       'about',
+      'avatar',
       'website_url',
       'createdAt',
     ];
