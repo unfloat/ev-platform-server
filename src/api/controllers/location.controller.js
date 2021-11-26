@@ -1,4 +1,5 @@
 const {
+  createCpoLocation,
   getLocationsProvider,
   getLocationsByUserGeolocationProvider,
   getLocationsByConnectorTypeProvider,
@@ -151,6 +152,9 @@ exports.createLocation = async (req, res, next) => {
       max_amperage: req.body.max_amperage,
       owner: user,
     });
+
+    // Implement saving station to remote server
+    const queueStation = await createCpoLocation(cpoOwnedLocation);
 
     const savedCpoOwnedLocation = await cpoOwnedLocation.save();
 

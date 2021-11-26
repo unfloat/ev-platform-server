@@ -5,16 +5,12 @@ exports.getEvses = async (location, evse) => {
   try {
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: 'Token 08382f42-3b13-4e49-9d80-0181fda5ebd7',
-      'X-Request-ID': '1',
-      'X-Correlation-ID': '1',
-      'OCPI-from-country-code': 'FR',
-      'OCPI-from-party-id': 'EVC',
-      'OCPI-to-country-code': 'CH',
-      'OCPI-to-party-id': 'CPO',
     };
+
+    // Exact match on a given EVSE operator id (comma separated list)
+    // Example value:1,2,3
     const evses = await axios.get(
-      `https://test-ocn.emobilify.com/ocpi/sender/2.2/locations/${location}/${evse}`,
+      `https://api.openchargemap.io/v3/poi?/operatorid=${evse}`,
       // /ocpi/sender/2.2/locations/LOC1/1234/1
       {
         headers,

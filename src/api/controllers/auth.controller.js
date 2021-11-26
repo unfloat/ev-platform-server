@@ -4,7 +4,6 @@ const RefreshToken = require('../models/refreshToken.model');
 const PasswordResetToken = require('../models/passwordResetToken.model');
 const moment = require('moment-timezone');
 const { jwtExpirationInterval } = require('../../config/vars');
-// const { omit } = require('lodash');
 const APIError = require('../utils/APIError');
 const emailProvider = require('../services/emails/emailProvider');
 const gravatar = require('gravatar');
@@ -17,16 +16,7 @@ function generateTokenResponse(user, accessToken) {
   const tokenType = 'Bearer';
   const refreshToken = RefreshToken.generate(user).token;
   const expiresIn = moment().add(jwtExpirationInterval, 'minutes');
-  console.log(
-    'generateTokenResponse: tokenType',
-    tokenType,
-    'accessToken',
-    accessToken,
-    'refreshToken',
-    refreshToken,
-    'accessToken',
-    accessToken,
-  );
+
   return {
     tokenType,
     accessToken,
@@ -43,8 +33,7 @@ function generateTokenResponse(user, accessToken) {
 exports.register = async (req, res, next) => {
   try {
     const userData = req.body;
-    console.log('userData', userData);
-    // omit(req.body, 'role')
+
     const avatar = gravatar.url(
       userData.email,
       { s: '100', r: 'x', d: 'retro' },
@@ -53,7 +42,7 @@ exports.register = async (req, res, next) => {
     const user = await new User({ ...userData, avatar }).save();
     const userTransformed = user.transform();
     const token = generateTokenResponse(user, user.token());
-    console.log('exports register user', user);
+
     res.status(httpStatus.CREATED);
     return res.json({ token, user, avatar });
   } catch (error) {
